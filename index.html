@@ -1,0 +1,843 @@
+<!--<?php
+
+
+/*include('connect.php');
+$whotcards=mysqli_query($connect, "SELECT * FROM allwhotcards");
+
+while($getwhotcard=mysqli_fetch_array($whotcards)){
+    $card_type=$getwhotcard['card_type'];
+    $card_value=$getwhotcard['value'];
+    $card_shape=$getwhotcard['shape'];
+
+    echo '["'.$card_type.'", '.$card_value.', "'.$card_shape.'"], ';
+}
+
+$y=0;
+
+while($y<101){
+    $background="rgb(".rand(0,255).",".rand(0,255).",".rand(0,255).")";
+    $cost=$y*10000;
+    $reward=$cost*2;
+    echo"{'ID':'".$y."', 'color':'".$background."', 'cost':'".$cost."', 'reward':'".$reward."'}, ";
+    $y++;
+}
+*/
+?>
+-->
+
+<html>
+<head>
+        <!-- Meta tags -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<link href="fonts/fontawesome-free-5.8.2-web/css/all.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+<main id="mainbody">
+
+    <div id="levelUnlockPop">Warrior <span id="newLevelpop"></span> Unlocked</div>
+
+    <div class="hardModal" >
+
+        <div class="modalbox" id="NameModal">
+                <button class="btn btn-danger close-btn" id="hardModalClose" onclick="closeHardmodal()">x</button>
+            <div id="ModalTitle">Set a Player Name</div>
+
+            <div class="formBox">
+                <input type="text" maxlength="15" class="textinput" placeholder="Player Name" id="nameInput"><br>
+                <div class="formNote">
+                    Allows only English alphabets, numerals and the following special characters: Dots(.) and Underscores (_)
+                </div><br>
+                <button class="btn btn-secondary" onclick="setName()">Lets Go!</button>
+            </div>
+
+        </div>
+
+
+        <div class="modalbox" id="avatarModal">
+            <button class="btn btn-danger close-btn" onclick="closeHardmodal()">x</button>
+            <div id="ModalTitle">Choose an Avatar</div>
+
+            <div class="formBox">
+                <div id="avatarsBox">
+                    
+                </div>
+                <button class="btn btn-secondary" onclick="setAvatar()">Set Avatar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="modal" >
+        <div class="closemodalback" onclick="closemodal()"></div>
+
+        
+
+        <div class="modalbox" id="settingsPop">
+            <button class="btn btn-danger close-btn" onclick="closemodal()">x</button>
+            <div id="ModalTitle">Settings</div>
+
+            <div>Music <input type="checkbox" name="musicSwitch" checked id="musicSwitch"  onchange="musicSwitch()"></div>
+
+            <div>Voice <input type="checkbox" name="voiceSwitch"  checked id="voiceSwitch"  onchange="voiceSwitch()"></div>
+
+            <div>Sound Effects <input type="checkbox" name="effectsSwitch" checked id="effectsSwitch"  onchange="effectsSwitch()"></div>
+
+            <div style="margin:20px 0px;"><button class="btn btn-primary" onclick='openHardmodal("NameModal")'>Change Name</button> <button class="btn btn-secondary" onclick='openHardmodal("avatarModal")'>Change Avatar</button> </div>
+
+        </div>
+
+
+        <div class="modalbox" id="informationPop">
+            <button class="btn btn-danger close-btn" onclick="closemodal()">x</button>
+            <div id="ModalTitle"><button class="btn btn-primary" onclick="howToPlay()">How to Play</button>  <button  onclick="about()" style="float:right;" class="btn btn-primary">About</button></div>
+
+            <div id="infobox" >
+                <div id="how-to-box">
+                <h5>How to Play WHot!</h5>
+
+                <h5>- Deal</h5>
+                <p>The dealer shuffles and deals 2-7 cards to each player, one at a time, and puts the rest of the pack face down to form a <b>draw pile</b>. The dealer also draws a card from the draw pile face up to start a <b>play pile</b>.</p>
+
+                <h5>- Play</h5>
+                <p>The player begins by playing any card from their hand with same symbol or number with the face up card in the  <b>play pile</b>.
+
+                    Subsequent players at their turn may play one card face up on top of the play pile, if they have a card that fits. When the previous play was a card of one of the five suits, the possible plays are:
+                    
+                    <ul>
+                        <li>any card with the same symbol (suit) as the previous play;</li>
+                        <li>any card with the same number as the previous play;</li>
+                    </ul></p>
+
+                <h5>- Special Cards</h5>
+                <p>The shapes (suits) in Whot are called ball <i class="fas fa-circle"></i> , angle <i class="fas fa-mountain"></i> , cross <i class="fas fa-plus"></i> , carpet <i class="fas fa-square"></i> , and star <i class="fas fa-star"></i>. The basic rules are similar to the British printed rules, but some of the cards have special effects, which vary a little from place to place:</p>
+                <div class="table-responsive">
+                    <table class="table table-hover-text mb-0 table-fluid">
+                      <thead>
+                      <tr>
+                        <th scope="col">Card Value</th>
+                        <th class="text-left" scope="col">Effect</th>
+                        <th class="text-left" scope="col">Explanation</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                      <tr>
+                        <td class="text-dark">1</td>
+                        <td class="text-left">HOLD ON</td>
+                        <td class="text-left">Player plays again.</td>
+                      </tr>
+                      <tr>
+                        <td class="text-dark">2	</td>
+                        <td class="text-left">PICK TWO</td>
+                        <td class="text-left">Opponent must draw two cards from the stock and miss a turn.
+
+After cards have been drawn for the two(s), opponent can play any legal card.</td>
+                      </tr>
+                      <tr>
+                        <td class="text-dark">5</td>
+                        <td class="text-left">PICK THREE</td>
+                        <td class="text-left">Opponent must draw three cards from the stock  and miss a turn.</td>
+                      </tr>
+                       <tr>
+                        <td class="text-dark">8</td>
+                        <td class="text-left">SUSPENSION</td>
+                        <td class="text-left">Opponent misses a turn. Actually SUSPENSION & HOLD ON is same thing. It is different when it is a Whot game of over 2 players.</td>
+                      </tr>
+                      <tr>
+                        <td class="text-dark">14</td>
+                        <td class="text-left">GENERAL MARKET	</td>
+                        <td class="text-left">Opponent must draw one card from the stock and miss a turn.
+</td>
+                      </tr>
+                      </tbody>
+                    </table>
+                  </div>
+
+            <h5>- Scoring</h5>
+            <p><b>The play ends in two ways</b>
+                <ul>
+                    <li>When a player wins by getting rid of all their cards.</li>
+                    <li>When the draw pile is finished, the total value of each player card is summed up. <br>The player with the lowest value wins the Game.</li>
+                </ul></p>
+                </div>
+
+                <div id="about-box">
+
+                    <h5>About WhotKings</h5>
+                    <p>A product of BAOCorps. Whot! a national card game of Nigeria  was one of the earliest commercial games based of the Eights family, in which players try to be the first to get rid of their cards by following number or suit. Whot! was invented (but, apparently, not patented) and trademarked by William Henry Storey, of Southend-on-Sea, England in 1935. It was first marketed by the company Storey & Co of Croydon, which he set up in 1930, but was soon acquired by Waddingtons of Leeds, and was popular in Britain in the 1950's and 1960's. Waddingtons continued to sell it until the 1990's; nowadays it is distributed by Winning Moves UK in their Top Cards series.
+
+                        </p>
+
+                        <p>WhotKings is coded in 2023 by Benjamin Akindote and copyrights BAOCorps.</p>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modalbox" id="lowCoinsPop">
+            <button class="btn btn-danger close-btn" onclick="closemodal()">x</button>
+            You Coins is low for the Cost<br>
+            <span>Battle <b>warrior 1</b> for free to earn <br><i class="fas fa-coins"></i> 5000</span>
+
+            <div class="modalActions"><button class="btn btn-primary" onclick="closemodal()">Cancel</button> &nbsp;&nbsp; <button onclick="startBattle(1)" class="btn btn-secondary"><i class="fas fa-play"></i> Warrior 1</button></div>
+
+        </div>
+
+        <div class="modalbox" id="battleinfopop">
+            <button class="btn btn-danger close-btn" onclick="closemodal()">x</button>
+
+            <div class="battle-stars">
+                <div class="battleStar" id="previewStar"><span class="star"></span></div>
+            </div>
+            <div class="battlePlayerpreview" style="box-shadow:none;">   
+
+                <div class="warriordp" id="previewDp" style="border:3px solid #fff"><img src="img/avatarsandicons/201avatar.png"></div>
+
+                <div class="warriorname" id="previewName">YOU</div>
+
+            
+            </div>
+
+            <div class="versus">VS</div>
+
+            <div class="battleOpppreview" style="box-shadow:none;">   
+
+                <div class="warriordp" style="border:3px solid #fff" id="previewOppdp"></div>
+
+                <div class="warriorname" id="previewOppname">warrior 2</div>
+
+            
+            </div>
+
+            <div class="previewReward">Reward: <i class="fas fa-coins"></i> <span id="previewReward"></span>
+            <br>
+            <button onclick="playGame()"><i class="fas fa-play"></i></button>
+        
+            </div>
+            
+        </div>
+    </div>
+
+    <div id="introBack"></div>
+
+    <div id="introBox">
+
+        
+        
+
+        <div id="introLogo">
+            <div id="introCrown"><i class="fas fa-crown"></i></div>
+            <h1>WH<span id="offset">OT</span>KINGS</h1>
+        </div>
+        
+        <button id="introButton" onclick="startgame()"><i class="fas fa-play"></i></button>
+
+        <div id="introhandClick"  onclick="startgame()"><img src="img/click-hand.gif"></div>
+    </div>
+    <div id="header">
+        <div id="left">
+            <button onclick="openmodal('settingsPop')" class="btn"><i class="fas fa-cog"></i></button>
+            &nbsp;
+            <button  onclick="openmodal('informationPop')"  class="btn"><i class="fas fa-info"></i></button>
+        </div>
+        <div id="right"><i class="fas fa-coins	"></i> <span id="coinbalance"></span></div>
+        <div id="center">
+            <div id="headerDp"></div>
+            <div id="headerName"></div>
+        </div>
+    </div>
+
+    <div id="homebox">
+
+    
+    <div id="warriorstitle">PICK A WARRIOR & BATTLE</div>
+
+    <div id="warriorsbox">
+        
+    </div>
+
+    
+</div>
+
+    <div id="stage">
+        <iframe src="" id="gameframe"></iframe>
+    </div>
+
+    <audio controls autoplay loop id="soundtrack" class="soundbox">
+        <source src="sounds/soundtrack.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio controls id="flipcard" class="soundbox">
+        <source src="sounds/flipcard.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <audio controls id="newLevelSound" class="soundbox">
+        <source src="sounds/newLevelSound.wav" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+</main>
+
+
+
+<script>
+
+
+  
+
+    
+
+    
+
+    function setName(){
+        
+        playsound("flipcard", 1);
+
+        var playerName = $("#nameInput").val();
+
+        var nameRegex = /^[a-zA-Z0-9_\.]+$/;
+        var validPlayerName = playerName.match(nameRegex);
+        if(validPlayerName == null){
+            $("#nameInput").css("background","#dcadad");
+            $(".formNote").css("color","#dcadad");
+            $("#nameInput").focus();
+            return false;
+        }
+
+        setCookie("playerName",playerName,365);
+        loadAvatars();
+
+        $("#headerName").html(getCookie("playerName"));
+
+        setTimeout(function(){
+            closeHardmodal();
+            if(getCookie("NewPlayer")=="yes"){
+                openHardmodal("avatarModal");
+            }
+        },2000);
+
+    }
+
+    function setAvatar(){
+
+        if(getCookie("NewPlayer")=="yes"){
+            openmodal("informationPop");
+            setCookie("NewPlayer", "no",365);
+            $("#hardModalClose").css("display","block");
+        }
+        
+        playsound("flipcard", 1);
+
+        var playerAvatar=$("input[name='avatarPick']:checked").val();
+        
+        setCookie("playerAvatar",playerAvatar,365);
+
+        
+        $("#headerDp").html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+
+        showWarriors();
+
+
+        $('#avatarsBox').html('');
+
+        closeHardmodal();
+    }
+
+
+
+    if(getCookie("music")==""){
+        setCookie("music","on",365);
+    }
+
+    if(getCookie("voice")==""){
+        setCookie("voice","on",365);
+    }
+
+    if(getCookie("effects")==""){
+        setCookie("effects","on",365);
+    }
+
+function musicSwitch(){
+    if (document.getElementById('musicSwitch').checked) 
+    {
+        setCookie("music","on",365);
+        playsound("soundtrack",0.5);
+    } else {
+        setCookie("music","off",365);
+        playsound("soundtrack",0);
+    }
+}
+
+function voiceSwitch(){
+    if (document.getElementById('voiceSwitch').checked) 
+    {
+        setCookie("voice","on",365);
+    } else {
+        setCookie("voice","off",365);
+    }
+}
+
+function effectsSwitch(){
+    if (document.getElementById('effectsSwitch').checked) 
+    {
+        setCookie("effects","on",365);
+    } else {
+        setCookie("effects","off",365);
+    }
+}
+
+
+
+let warriors = [{'ID':'0', 'color':'rgb(12 64 142)', 'cost':'0', 'reward':'5000'}, {'ID':'1', 'color':'rgb(73,193,120)', 'cost':'10000', 'reward':'20000'}, {'ID':'2', 'color':'rgb(66,7,58)', 'cost':'20000', 'reward':'40000'}, {'ID':'3', 'color':'rgb(83,181,43)', 'cost':'30000', 'reward':'60000'}, {'ID':'4', 'color':'rgb(123,216,222)', 'cost':'40000', 'reward':'80000'}, {'ID':'5', 'color':'rgb(197,219,199)', 'cost':'50000', 'reward':'100000'}, {'ID':'6', 'color':'rgb(83,247,221)', 'cost':'60000', 'reward':'120000'}, {'ID':'7', 'color':'rgb(160,117,71)', 'cost':'70000', 'reward':'140000'}, {'ID':'8', 'color':'rgb(71,27,126)', 'cost':'80000', 'reward':'160000'}, {'ID':'9', 'color':'rgb(229,13,173)', 'cost':'90000', 'reward':'180000'}, {'ID':'10', 'color':'rgb(209,65,243)', 'cost':'100000', 'reward':'200000'}, {'ID':'11', 'color':'rgb(153,234,112)', 'cost':'110000', 'reward':'220000'}, {'ID':'12', 'color':'rgb(244,29,64)', 'cost':'120000', 'reward':'240000'}, {'ID':'13', 'color':'rgb(157,75,46)', 'cost':'130000', 'reward':'260000'}, {'ID':'14', 'color':'rgb(160,34,127)', 'cost':'140000', 'reward':'280000'}, {'ID':'15', 'color':'rgb(24,192,86)', 'cost':'150000', 'reward':'300000'}, {'ID':'16', 'color':'rgb(183,159,158)', 'cost':'160000', 'reward':'320000'}, {'ID':'17', 'color':'rgb(2,156,40)', 'cost':'170000', 'reward':'340000'}, {'ID':'18', 'color':'rgb(164,69,241)', 'cost':'180000', 'reward':'360000'}, {'ID':'19', 'color':'rgb(59,87,106)', 'cost':'190000', 'reward':'380000'}, {'ID':'20', 'color':'rgb(247,119,229)', 'cost':'200000', 'reward':'400000'}, {'ID':'21', 'color':'rgb(248,252,91)', 'cost':'210000', 'reward':'420000'}, {'ID':'22', 'color':'rgb(99,144,75)', 'cost':'220000', 'reward':'440000'}, {'ID':'23', 'color':'rgb(224,145,222)', 'cost':'230000', 'reward':'460000'}, {'ID':'24', 'color':'rgb(122,56,228)', 'cost':'240000', 'reward':'480000'}, {'ID':'25', 'color':'rgb(157,135,119)', 'cost':'250000', 'reward':'500000'}, {'ID':'26', 'color':'rgb(184,105,204)', 'cost':'260000', 'reward':'520000'}, {'ID':'27', 'color':'rgb(167,69,219)', 'cost':'270000', 'reward':'540000'}, {'ID':'28', 'color':'rgb(219,242,167)', 'cost':'280000', 'reward':'560000'}, {'ID':'29', 'color':'rgb(0,14,203)', 'cost':'290000', 'reward':'580000'}, {'ID':'30', 'color':'rgb(122,183,219)', 'cost':'300000', 'reward':'600000'}, {'ID':'31', 'color':'rgb(81,76,147)', 'cost':'310000', 'reward':'620000'}, {'ID':'32', 'color':'rgb(31,25,247)', 'cost':'320000', 'reward':'640000'}, {'ID':'33', 'color':'rgb(29,20,45)', 'cost':'330000', 'reward':'660000'}, {'ID':'34', 'color':'rgb(172,56,166)', 'cost':'340000', 'reward':'680000'}, {'ID':'35', 'color':'rgb(158,77,48)', 'cost':'350000', 'reward':'700000'}, {'ID':'36', 'color':'rgb(131,10,207)', 'cost':'360000', 'reward':'720000'}, {'ID':'37', 'color':'rgb(142,246,106)', 'cost':'370000', 'reward':'740000'}, {'ID':'38', 'color':'rgb(13,9,196)', 'cost':'380000', 'reward':'760000'}, {'ID':'39', 'color':'rgb(5,125,45)', 'cost':'390000', 'reward':'780000'}, {'ID':'40', 'color':'rgb(20,236,230)', 'cost':'400000', 'reward':'800000'}, {'ID':'41', 'color':'rgb(47,141,8)', 'cost':'410000', 'reward':'820000'}, {'ID':'42', 'color':'rgb(78,193,197)', 'cost':'420000', 'reward':'840000'}, {'ID':'43', 'color':'rgb(112,171,232)', 'cost':'430000', 'reward':'860000'}, {'ID':'44', 'color':'rgb(183,216,163)', 'cost':'440000', 'reward':'880000'}, {'ID':'45', 'color':'rgb(66,1,240)', 'cost':'450000', 'reward':'900000'}, {'ID':'46', 'color':'rgb(73,65,186)', 'cost':'460000', 'reward':'920000'}, {'ID':'47', 'color':'rgb(148,107,51)', 'cost':'470000', 'reward':'940000'}, {'ID':'48', 'color':'rgb(153,69,118)', 'cost':'480000', 'reward':'960000'}, {'ID':'49', 'color':'rgb(252,196,11)', 'cost':'490000', 'reward':'980000'}, {'ID':'50', 'color':'rgb(251,90,186)', 'cost':'500000', 'reward':'1000000'}, {'ID':'51', 'color':'rgb(15,107,60)', 'cost':'510000', 'reward':'1020000'}, {'ID':'52', 'color':'rgb(103,33,39)', 'cost':'520000', 'reward':'1040000'}, {'ID':'53', 'color':'rgb(151,147,180)', 'cost':'530000', 'reward':'1060000'}, {'ID':'54', 'color':'rgb(92,252,121)', 'cost':'540000', 'reward':'1080000'}, {'ID':'55', 'color':'rgb(209,149,171)', 'cost':'550000', 'reward':'1100000'}, {'ID':'56', 'color':'rgb(93,85,254)', 'cost':'560000', 'reward':'1120000'}, {'ID':'57', 'color':'rgb(174,255,174)', 'cost':'570000', 'reward':'1140000'}, {'ID':'58', 'color':'rgb(204,129,72)', 'cost':'580000', 'reward':'1160000'}, {'ID':'59', 'color':'rgb(63,195,230)', 'cost':'590000', 'reward':'1180000'}, {'ID':'60', 'color':'rgb(87,199,199)', 'cost':'600000', 'reward':'1200000'}, {'ID':'61', 'color':'rgb(253,55,65)', 'cost':'610000', 'reward':'1220000'}, {'ID':'62', 'color':'rgb(180,126,254)', 'cost':'620000', 'reward':'1240000'}, {'ID':'63', 'color':'rgb(69,141,244)', 'cost':'630000', 'reward':'1260000'}, {'ID':'64', 'color':'rgb(50,133,194)', 'cost':'640000', 'reward':'1280000'}, {'ID':'65', 'color':'rgb(50,238,73)', 'cost':'650000', 'reward':'1300000'}, {'ID':'66', 'color':'rgb(23,249,39)', 'cost':'660000', 'reward':'1320000'}, {'ID':'67', 'color':'rgb(35,17,154)', 'cost':'670000', 'reward':'1340000'}, {'ID':'68', 'color':'rgb(29,47,15)', 'cost':'680000', 'reward':'1360000'}, {'ID':'69', 'color':'rgb(206,243,218)', 'cost':'690000', 'reward':'1380000'}, {'ID':'70', 'color':'rgb(215,190,137)', 'cost':'700000', 'reward':'1400000'}, {'ID':'71', 'color':'rgb(3,181,29)', 'cost':'710000', 'reward':'1420000'}, {'ID':'72', 'color':'rgb(243,172,215)', 'cost':'720000', 'reward':'1440000'}, {'ID':'73', 'color':'rgb(16,33,109)', 'cost':'730000', 'reward':'1460000'}, {'ID':'74', 'color':'rgb(88,135,127)', 'cost':'740000', 'reward':'1480000'}, {'ID':'75', 'color':'rgb(227,102,230)', 'cost':'750000', 'reward':'1500000'}, {'ID':'76', 'color':'rgb(133,14,209)', 'cost':'760000', 'reward':'1520000'}, {'ID':'77', 'color':'rgb(51,87,214)', 'cost':'770000', 'reward':'1540000'}, {'ID':'78', 'color':'rgb(120,78,121)', 'cost':'780000', 'reward':'1560000'}, {'ID':'79', 'color':'rgb(168,171,84)', 'cost':'790000', 'reward':'1580000'}, {'ID':'80', 'color':'rgb(144,29,164)', 'cost':'800000', 'reward':'1600000'}, {'ID':'81', 'color':'rgb(101,38,83)', 'cost':'810000', 'reward':'1620000'}, {'ID':'82', 'color':'rgb(31,44,50)', 'cost':'820000', 'reward':'1640000'}, {'ID':'83', 'color':'rgb(188,76,139)', 'cost':'830000', 'reward':'1660000'}, {'ID':'84', 'color':'rgb(202,212,201)', 'cost':'840000', 'reward':'1680000'}, {'ID':'85', 'color':'rgb(82,129,75)', 'cost':'850000', 'reward':'1700000'}, {'ID':'86', 'color':'rgb(183,44,216)', 'cost':'860000', 'reward':'1720000'}, {'ID':'87', 'color':'rgb(248,250,79)', 'cost':'870000', 'reward':'1740000'}, {'ID':'88', 'color':'rgb(23,43,104)', 'cost':'880000', 'reward':'1760000'}, {'ID':'89', 'color':'rgb(154,125,67)', 'cost':'890000', 'reward':'1780000'}, {'ID':'90', 'color':'rgb(85,176,20)', 'cost':'900000', 'reward':'1800000'}, {'ID':'91', 'color':'rgb(30,147,201)', 'cost':'910000', 'reward':'1820000'}, {'ID':'92', 'color':'rgb(248,227,63)', 'cost':'920000', 'reward':'1840000'}, {'ID':'93', 'color':'rgb(224,117,229)', 'cost':'930000', 'reward':'1860000'}, {'ID':'94', 'color':'rgb(219,245,235)', 'cost':'940000', 'reward':'1880000'}, {'ID':'95', 'color':'rgb(31,71,255)', 'cost':'950000', 'reward':'1900000'}, {'ID':'96', 'color':'rgb(84,131,159)', 'cost':'960000', 'reward':'1920000'}, {'ID':'97', 'color':'rgb(51,151,18)', 'cost':'970000', 'reward':'1940000'}, {'ID':'98', 'color':'rgb(227,207,18)', 'cost':'980000', 'reward':'1960000'}, {'ID':'99', 'color':'rgb(238,74,70)', 'cost':'990000', 'reward':'1980000'}, {'ID':'100', 'color':'rgb(157,238,1)', 'cost':'1000000', 'reward':'2000000'}
+];
+
+
+if(getCookie("playerName")==""){
+        setCookie("NewPlayer", "yes",365);
+        openHardmodal("NameModal");
+        setCookie("playerAvatar","201",365);
+    }else{
+        showWarriors();
+        $("#hardModalClose").css("display","block");
+    }
+
+//alert(warriors[90]['color']);
+
+
+    if(getCookie("coinBalance")=="" || getCookie("coinBalance")=="NaN"){
+        var newBalance = 20000;
+        setCookie("coinBalance", newBalance, 365);
+    }
+
+    if(getCookie("lastWarriorUnlocked")==""){
+        var lastWarriorUnlocked = 2;
+        setCookie("lastWarriorUnlocked", lastWarriorUnlocked, 365);
+    }
+
+    
+   
+window.onmessage = function(e) {
+    if (e.data == 'addPrize') {
+
+        var coinbalance = getCookie("coinBalance");
+        var addCoins = parseFloat(getCookie("coinBalance"))+parseFloat(getCookie("currentReward"));
+
+        setCookie("coinBalance", addCoins, 365);
+
+        setCookie("currentReward", 0, 0);
+        //alert(parseFloat(getCookie("currentReward")));
+        $('#coinbalance').html(getCookie("coinBalance"));
+
+        if(getCookie("lastWarriorUnlocked")==getCookie("currentBattle")){
+            setCookie("lastWarriorUnlocked",parseFloat(getCookie("currentBattle"))+1,365);
+
+            setCookie("currentReward", 0, 0);
+            
+            setCookie("currentBattle", 0, 0);
+
+            //alert('You unlocked new warrior);
+            $('#newLevelpop').html(getCookie("lastWarriorUnlocked"));
+
+            setTimeout(function(){
+                playsound("newLevelSound", 1);
+                $('#levelUnlockPop').css('top','0');
+            
+            },2000);
+        }
+    }else if (e.data == 'goHome') {
+        setCookie("currentReward", 0, 0);
+        setCookie("currentBattle", 0, 0);
+
+        $('#levelUnlockPop').css('top','-100%');
+        $('#homebox').css("display","block");
+        $('#warriorsbox').html('');
+        showWarriors();
+        $('#header').css("display","block");
+        $('#coinbalance').html(getCookie("coinBalance"));
+        $('#stage').css("display","none");
+        document.getElementById('gameframe').src = "";
+    }else if (e.data == 'goHomeUnlocked') {
+        setCookie("currentReward", 0, 0);
+        setCookie("currentBattle", 0, 0);
+
+        $('#levelUnlockPop').css('top','-100%');
+        $('#homebox').css("display","block");
+        $('#warriorsbox').html('');
+        showWarriors();
+        $('#header').css("display","block");
+        $('#coinbalance').html(getCookie("coinBalance"));
+        $('#stage').css("display","none");
+        document.getElementById('gameframe').src = "";
+
+        setTimeout(nextBattle,2000);
+    }else if (e.data == 'nextBattle') {
+        $('#levelUnlockPop').css('top','-100%');
+    }else if (e.data == 'settings') {
+        openmodal("settingsPop");
+    }else if (e.data == 'lowCoinsPop') {
+        openmodal("lowCoinsPop");
+    }
+};
+
+function nextBattle(){
+    startBattle(parseFloat(getCookie("lastWarriorUnlocked")));
+}
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + "";
+}
+
+$('#coinbalance').html(getCookie("coinBalance"));
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+//setCookie("coinBalance",0, 365);
+
+function openmodal(modalID){
+    closemodal();
+    closeHardmodal();
+    playsound("flipcard",1);
+    $(".modal").css("display","block");
+    
+    if(modalID=="informationPop"){
+        $("#"+modalID).css("display","flex");
+    }else{
+        
+        $("#"+modalID).css("display","block");
+    }
+
+
+    setTimeout(function(){
+        $('.modalbox').css("left",'50%');},0100);
+
+}
+
+function openHardmodal(modalID){
+    closemodal();
+    closeHardmodal();
+    if(modalID=="avatarModal"){
+        loadAvatars();
+    }
+
+    if(modalID=="NameModal"){
+        $("#nameInput").val(getCookie("playerName"));
+    }
+
+    
+    playsound("flipcard",1);
+    $(".hardmodal").css("display","block");
+    
+    $("#"+modalID).css("display","block");
+
+    setTimeout(function(){
+        $('.modalbox').css("left",'50%');},0100);
+
+}
+
+
+
+function closemodal(){
+    playsound("flipcard", 1);
+    $('.modal').css("display",'none');
+    var modalsLength = $('.modalbox').length;
+    
+    $('.modalbox').css("left",'-300%');
+    
+    for(i=0;i<modalsLength;i++){
+        document.getElementsByClassName('modalbox')[i].style.display="none";
+    }
+}
+
+function closeHardmodal(){
+    playsound("flipcard", 1);
+    $('.hardModal').css("display",'none');
+    var modalsLength = $('.modalbox').length;
+
+    $('.modalbox').css("left",'-300%');
+    
+    for(i=0;i<modalsLength;i++){
+        document.getElementsByClassName('modalbox')[i].style.display="none";
+    }
+}
+
+
+function howToPlay(){
+    $("#how-to-box").css("display","block");
+    $("#about-box").css("display","none");
+}
+
+function about(){
+    $("#how-to-box").css("display","none");
+    $("#about-box").css("display","block");
+}
+
+
+
+
+function playGame(){
+
+    
+
+    closemodal();
+    
+    var currentCost = warriors[getCookie("currentBattle")-1]['cost'];
+
+    
+    var coinBalance = getCookie("coinBalance");
+
+    if(parseFloat(currentCost)>parseFloat(coinBalance)){
+        openmodal("lowCoinsPop");
+        return false;
+    }   
+
+    var newCoinBalance = coinBalance - currentCost;
+    setCookie("coinBalance",newCoinBalance,365);
+
+    $('#coinbalance').html(getCookie("coinBalance"));
+
+    $('#homebox').css("display","none");
+    $('#stage').css("display","block");
+    $('#header').css("display","none");
+    document.getElementById('gameframe').src = "all-rules.html";
+    playsound("flipcard", 1);
+
+}
+
+function startgame(){
+    if(getCookie("music")=="off"){
+        $("#musicSwitch").click();
+        playsound("soundtrack", 0);
+    }else{
+        playsound("soundtrack", 0.5);
+    }
+
+    if(getCookie("voice")=="off"){
+        $("#voiceSwitch").click();
+    }
+
+    if(getCookie("effects")=="off"){
+        $("#effectsSwitch").click();
+    }
+    
+    $('#introBox').css('top','-100%');
+    $('#introBack').css('display','none');
+
+    playsound("flipcard", 1);
+
+    $("#headerName").html(getCookie("playerName"));
+
+    $("#headerDp").html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+    
+}
+
+
+
+function playsound(soundeffect, thevolume){
+    if(soundeffect=="soundtrack"){
+        var thesound = document.getElementById("soundtrack");
+        if(thevolume==0){
+            thesound.pause();
+            thesound.currentTime = 0;
+        }else{
+            thesound.volume = thevolume;
+            thesound.volume = 0.5;
+            thesound.play();
+        }
+    }
+
+    if(soundeffect=="newLevelSound"){
+        var thesound = document.getElementById("newLevelSound");
+        thesound.play();
+    }
+
+    if(getCookie("effects")=="on"){
+        if(soundeffect=="flipcard"){
+            var thesound = document.getElementById("flipcard");
+            thesound.playbackRate = 2;
+            thesound.play();
+        }
+    }
+}
+
+
+
+function showWarriors(){
+    for(i=0;i<100;i++){
+        if(i>getCookie("lastWarriorUnlocked")-1){
+            var warriorlock='<div class="warriorlock"><i class="fas fa-lock"></i></div>';
+            var warriorImgStyle="opacity:0.2;";
+        }else{
+            var warriorlock="";
+            var warriorImgStyle="opacity:1;";
+        }
+
+        var warriorImgsum=i+100+1;
+        var warriorNamesum=i+1;
+
+        if(i==getCookie("lastWarriorUnlocked")-1){
+            var currentWarriorClass = "currentWarrior";
+        }else{
+            var currentWarriorClass = "";
+        }
+
+        var warriorStars = getCookie("warriorStar"+warriorNamesum);
+
+        var warriorbox=`
+            <div class="warrior `+currentWarriorClass+`" style="background-image: linear-gradient(to right, rgba(255,0,0,0),#222, `+warriors[i]['color']+`">
+
+                `+warriorlock+`
+
+                <div class="warriordp" style="border:3px solid `+warriors[i]['color']+`;`+warriorImgStyle+`"><img src="img/avatarsandicons/`+warriorImgsum+`avatar.png"></div>
+
+                <div class="warriorname">
+                    <div class="warrior-stars">
+                        <div class="battleStar star`+warriorStars+`"><!--&#9733;--></div>
+                    </div>
+                    warrior `+warriorNamesum+`</div>
+
+                <div class="battlecoins">
+                    <div class="costcoins">
+                        <span>Cost</span><br>
+                        <i class="fas fa-coins	"></i> `+warriors[i]['cost']+`
+                    </div>
+                    <div class="rewardcoins">
+                        <span>Reward</span><br>
+                        <i class="fas fa-coins	"></i> +`+warriors[i]['reward']+`
+                    </div>
+                </div>
+
+                <div class="warrioraction">
+                    <button onclick="startBattle(`+warriorNamesum+`)" style="background-image: linear-gradient(to left, rgba(255,0,0,0),rgba(255,0,0,0), `+warriors[i]['color']+`);"><i class="fas fa-play	"></i></button>
+                </div>
+            </div>
+        `;
+
+        $('#warriorsbox').append(warriorbox);
+
+        if(i==99){
+            setTimeout(function(){
+
+            var $container = $("html,body");
+            var $scrollTo = $('.currentWarrior');
+
+            $container.animate({scrollTop: $scrollTo.offset().top - $container.offset().top + $container.scrollTop() - 250, scrollLeft: 0},300);
+            },0500);
+        }
+    }
+
+    
+}
+
+
+
+function loadAvatars(){
+    var Nowavatar=`
+        <div class="theavatar currentAvatar">
+                        <input type="radio" name="avatarPick" class="hoverRadio" value="`+getCookie("playerAvatar")+`" checked>
+                        <img src="img/avatarsandicons/`+getCookie("playerAvatar")+`avatar.png">
+                    </div>
+        `;
+
+        $('#avatarsBox').append(Nowavatar);
+
+    for(i=100;i<200;i++){
+
+        var avatarImgsum=i+100+1;
+        
+
+        if(avatarImgsum==getCookie("playerAvatar")){
+            var theavatar='';
+        }else{
+            var theavatar=`
+                <div class="theavatar">
+                                <input type="radio" name="avatarPick" class="hoverRadio" value="`+avatarImgsum+`" >
+                                <img src="img/avatarsandicons/`+avatarImgsum+`avatar.png">
+                            </div>
+                `;
+        }
+
+        $('#avatarsBox').append(theavatar);
+
+        if(i==199){
+            setTimeout(function(){
+            $('#avatarsBox').scrollTop(0);},0500);
+        }
+
+    }
+
+    
+}
+
+
+
+function startBattle(warriorID){
+    playsound("flipcard",1);
+    if(warriorID==""){
+        return false;
+    }
+
+    if(warriorID>getCookie("lastWarriorUnlocked")){
+        alert("Unlock FIrst");
+    }else{
+        var warriorImgsum=warriorID+100;
+
+        setCookie("currentBattle",warriorID,365);
+
+        
+        setCookie("lastBattle", warriorID, 365);
+
+        openmodal("battleinfopop");
+        
+        $('#battleinfopop').css("box-shadow",""+warriors[warriorID-1]['color']+" 1px 1px 10px 3px");
+        $('#battleinfopop').css("background",warriors[warriorID-1]['color']);
+        $('#battleinfopop').css("background-image","radial-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 60%))");
+        $('#previewOppname').html("warrior " +warriorID);
+
+        $('#previewName').html(getCookie("playerName"));
+
+        $('#previewOppdp').html('<img src="img/avatarsandicons/'+warriorImgsum+'avatar.png">');
+
+        $('#previewDp').html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+
+        $('#previewReward').html(warriors[warriorID-1]['reward']);
+
+        var warriorStar = getCookie("warriorStar"+warriorID);
+
+        $('#previewStar').html('<span class="star'+warriorStar+'"></span>');
+        //playGame();
+    }
+}
+
+
+</script>
+
+
+
+</body>
+</html>
+

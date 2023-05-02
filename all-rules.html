@@ -1,0 +1,1741 @@
+<!---<?php
+
+
+/*include('connect.php');
+$whotcards=mysqli_query($connect, "SELECT * FROM allwhotcards");
+
+while($getwhotcard=mysqli_fetch_array($whotcards)){
+    $card_type=$getwhotcard['card_type'];
+    $card_value=$getwhotcard['value'];
+    $card_shape=$getwhotcard['shape'];
+
+    echo '["'.$card_type.'", '.$card_value.', "'.$card_shape.'"], ';
+}*/
+
+?>-->
+<html>
+<head>
+        <!-- Meta tags -->
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<script src="js/jquery-3.2.1.min.js"></script>
+<script src="js/jquery.min.js"></script>
+<link href="fonts/fontawesome-free-5.8.2-web/css/all.css" rel="stylesheet">
+<link href="css/styles.css" rel="stylesheet">
+</head>
+<body>
+
+
+<main id="mainbody">
+
+<audio controls  id="dealingCards" class="soundbox">
+  <source src="sounds/dealingCards.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="flipcard" class="soundbox">
+  <source src="sounds/flipcard.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="generalmarket" class="soundbox">
+  <source src="sounds/GeneralMarket.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="holdon" class="soundbox">
+  <source src="sounds/HoldOn.mp3" type="audio/mpeg" class="soundbox">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="picktwo" class="soundbox">
+  <source src="sounds/PickTwo.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="PickThree" class="soundbox">
+    <source src="sounds/PickThree.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+<audio controls  id="continue" class="soundbox">
+  <source src="sounds/Continue.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="lastcard" class="soundbox">
+  <source src="sounds/LastCard.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="warning" class="soundbox">
+  <source src="sounds/Warning.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="checkup" class="soundbox">
+  <source src="sounds/CheckUp.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="wrongcard" class="soundbox">
+  <source src="sounds/wrongCard.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="nomoremarket" class="soundbox">
+  <source src="sounds/NoMoreMarket.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="youwin" class="soundbox">
+  <source src="sounds/YouWin.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="youlose" class="soundbox">
+  <source src="sounds/YouLose.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="fireworks" class="soundbox">
+  <source src="sounds/Fireworks.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="playCard" class="soundbox">
+  <source src="sounds/playCard.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<audio controls  id="starDrop" class="soundbox">
+    <source src="sounds/starDrop.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+
+
+<div id="gamestage">
+
+
+
+    <div class="gameAction" id="gameGoHome" onclick="cancelWarning()"><i class="fas fa-home"></i></div>
+    <div class="gameAction" id="gameSettings"  onclick="settings()"><i class="fas fa-cog"></i></div>
+
+    <!--Card Fancy POPs -->
+    <div id="fancyPops">
+        <div class="fancypopBox pickTwoFancyPop"><i class="far fa-hand-peace		"></i><br> PICK TWO!</div>
+
+        <div class="fancypopBox pickThreeFancyPop">💥<br> PICK THREE!</div>
+
+        <div class="fancypopBox marketFancyPop"><i class="far fa-hand-point-left	"></i> <br>GENERAL <br>&nbsp;&nbsp;&nbsp;MARKET! </div>
+
+        <div class="fancypopBox holdFancyPop"><i class="fas fa-hand-paper"></i> <br>HOLD ON! </div>
+    </div>
+
+
+
+    <div id="back-watermark"><i class="fas fa-crown	"></i><br><b id="backname">KINGS GAME</b></div>
+    <!--  PRIZE -->
+    <div id="prizebox"> <em>REWARD</em> <br><span><i class="fas fa-coins	"></i></span> <font id="gameprize"></font></div>
+
+    <div id="playerinfo">
+        <!--<div id="playerscore" class="scorearea">1</div> -->
+        <div class="playerdp" id="myDp"><img src="img/avatarsandicons/200avatar.png"></div>
+        <div id="playerdetails">
+            <div class="playername" id="myName">You</div>
+            <!--<div class="playercardsremaining"><span><i class="fas fa-coins	"></i></span> -10000 -->
+        </div>
+    </div>
+
+    <div id="opponentinfo">
+        <div class="playerdp" id="opponentdp">
+            <img src="img/avatarsandicons/201avatar.png">
+        </div>
+        <div id="playerdetails">
+            <div class="playername" id="opponentname">Opponent</div>
+        </div>
+    </div>
+
+    <div id="playercardscountBox">0 &#127136;</div>
+    <div id="oppocardscountBox">0 &#127136; </div>
+
+    <!-- SUMMING UP CARDS -->
+    <div id="oppoCardSum" class="sumShow">Lost | Card Sum = 79</div>
+    <div id="playerCardSum" class="sumShow">You Win | Card Sum = 42</div>
+
+    <div id="playercards">
+
+        <a class='playercardHide'></a>
+
+        <!-- Player Cards WIll be Generated Here -->
+
+    </div>
+
+    <div id="marketCount"><span id="allmarkets">49</span> &#127136;	
+</div>
+    <!--<?php
+    $marketcardsx=0;
+
+    while($marketcardsx<0){
+    ?>
+    <div class="marketcard">
+        <img src="img/whotback.png" onclick="generalMarket()">
+    </div>
+
+    <?php  $marketcardsx++;}?>
+
+
+    <a  id="facecard" class="addedfacecard" onclick="dealPlayerCards(1);">1<br>TR</a>-->
+
+
+
+    <div id="opponentcards" >
+    <!-- Opponent Cards WIll be Generated Here -->
+    </div>
+
+
+    <div class="modal gameplay" >
+        <div class="closemodalback" onclick="closemodal()"></div>
+
+        <div class="pyro">
+            <div class="before"></div>
+            <div class="after"></div>
+        </div>
+
+        <div class="modalbox" id="CountingMarket">
+            Market Exhausted<br>
+            <span>Summing Cards...</span>
+
+            <div class="countLoader"></div>
+
+            
+        </div>
+
+        <div class="modalbox" id="cancelGame">
+            Sure you want to end this Game?<br>
+            <span>Coins will not be refunded</span>
+
+            <div class="modalActions"><button class="btn btn-primary" onclick="closemodal()">Cancel</button> &nbsp;&nbsp; <button onclick="goHome()" class="btn btn-danger">End Game</button></div>
+
+            
+            
+        </div>
+
+        <div class="modalbox" id="resultInfopop">
+
+            <div class="battle-stars">
+                <div class="battleStar" id="previewStar">
+                    <div class=" zoomStar">☆</div> 
+                    <div class=" zoomStar">☆</div> 
+                    <div class=" zoomStar">☆</div>
+                </div>
+            </div>
+
+            <div class="battlePlayerpreview" style="box-shadow:none;">   
+
+                <div class="warriordp" id="previewDp" style="border:3px solid #fff"><img src="img/avatarsandicons/101avatar.png"></div>
+
+                <div class="warriorname" id="previewName">YOU</div>
+
+                <div class="bigWinStatus" id="playerwinStatus">WINNER</div>
+
+            
+            </div>
+
+            <div class="versus">VS</div>
+
+            <div class="battleOpppreview" style="box-shadow:none;">   
+
+                <div class="warriordp" style="border:3px solid #fff" id="previewOppdp"></div>
+
+                <div class="warriorname" id="previeOppname">opponent</div>
+
+                <div class="bigWinStatus"  id="oppowinStatus">WINNER</div>
+            
+            </div>
+
+
+            <div class="previewReward" >
+                
+            <div id="resultReward" class="glowing"><i class="fas fa-coins"></i> <span id="previewReward"></span></div>
+
+            <div id="tryAgain" onclick="tryAgain()"><i class="fas fa-play"></i> Try Again 
+            <br><span id="againCost">Cost&nbsp;&nbsp; <i class="fas fa-coins"></i> <em id="thecost">0</em></span></div>
+            <br>
+            <button onclick="goHome()" class="continuebtn" id="popGoHome"><i class="fas fa-home"></i> </button>
+
+            <button onclick="tryAgain()" class="continuebtn" id="popReplay">replay</button>
+
+            <button onclick="nextBattle()" class="continuebtn" id="popNextBattle"><i class="fas fa-arrow-right"></i> </button>
+        
+            </div>
+            
+        </div>
+
+    </div>
+</div>
+
+  
+
+
+
+
+</main>
+
+
+
+<script>
+
+    var thewarrior = getCookie("currentBattle");
+
+    if(thewarrior==""){
+        alert('No Battle Found');
+    }
+
+let warriors = [{'ID':'0', 'color':'rgb(12 64 142)', 'cost':'0', 'reward':'5000'}, {'ID':'1', 'color':'rgb(73,193,120)', 'cost':'10000', 'reward':'20000'}, {'ID':'2', 'color':'rgb(66,7,58)', 'cost':'20000', 'reward':'40000'}, {'ID':'3', 'color':'rgb(83,181,43)', 'cost':'30000', 'reward':'60000'}, {'ID':'4', 'color':'rgb(123,216,222)', 'cost':'40000', 'reward':'80000'}, {'ID':'5', 'color':'rgb(197,219,199)', 'cost':'50000', 'reward':'100000'}, {'ID':'6', 'color':'rgb(83,247,221)', 'cost':'60000', 'reward':'120000'}, {'ID':'7', 'color':'rgb(160,117,71)', 'cost':'70000', 'reward':'140000'}, {'ID':'8', 'color':'rgb(71,27,126)', 'cost':'80000', 'reward':'160000'}, {'ID':'9', 'color':'rgb(229,13,173)', 'cost':'90000', 'reward':'180000'}, {'ID':'10', 'color':'rgb(209,65,243)', 'cost':'100000', 'reward':'200000'}, {'ID':'11', 'color':'rgb(153,234,112)', 'cost':'110000', 'reward':'220000'}, {'ID':'12', 'color':'rgb(244,29,64)', 'cost':'120000', 'reward':'240000'}, {'ID':'13', 'color':'rgb(157,75,46)', 'cost':'130000', 'reward':'260000'}, {'ID':'14', 'color':'rgb(160,34,127)', 'cost':'140000', 'reward':'280000'}, {'ID':'15', 'color':'rgb(24,192,86)', 'cost':'150000', 'reward':'300000'}, {'ID':'16', 'color':'rgb(183,159,158)', 'cost':'160000', 'reward':'320000'}, {'ID':'17', 'color':'rgb(2,156,40)', 'cost':'170000', 'reward':'340000'}, {'ID':'18', 'color':'rgb(164,69,241)', 'cost':'180000', 'reward':'360000'}, {'ID':'19', 'color':'rgb(59,87,106)', 'cost':'190000', 'reward':'380000'}, {'ID':'20', 'color':'rgb(247,119,229)', 'cost':'200000', 'reward':'400000'}, {'ID':'21', 'color':'rgb(248,252,91)', 'cost':'210000', 'reward':'420000'}, {'ID':'22', 'color':'rgb(99,144,75)', 'cost':'220000', 'reward':'440000'}, {'ID':'23', 'color':'rgb(224,145,222)', 'cost':'230000', 'reward':'460000'}, {'ID':'24', 'color':'rgb(122,56,228)', 'cost':'240000', 'reward':'480000'}, {'ID':'25', 'color':'rgb(157,135,119)', 'cost':'250000', 'reward':'500000'}, {'ID':'26', 'color':'rgb(184,105,204)', 'cost':'260000', 'reward':'520000'}, {'ID':'27', 'color':'rgb(167,69,219)', 'cost':'270000', 'reward':'540000'}, {'ID':'28', 'color':'rgb(219,242,167)', 'cost':'280000', 'reward':'560000'}, {'ID':'29', 'color':'rgb(0,14,203)', 'cost':'290000', 'reward':'580000'}, {'ID':'30', 'color':'rgb(122,183,219)', 'cost':'300000', 'reward':'600000'}, {'ID':'31', 'color':'rgb(81,76,147)', 'cost':'310000', 'reward':'620000'}, {'ID':'32', 'color':'rgb(31,25,247)', 'cost':'320000', 'reward':'640000'}, {'ID':'33', 'color':'rgb(29,20,45)', 'cost':'330000', 'reward':'660000'}, {'ID':'34', 'color':'rgb(172,56,166)', 'cost':'340000', 'reward':'680000'}, {'ID':'35', 'color':'rgb(158,77,48)', 'cost':'350000', 'reward':'700000'}, {'ID':'36', 'color':'rgb(131,10,207)', 'cost':'360000', 'reward':'720000'}, {'ID':'37', 'color':'rgb(142,246,106)', 'cost':'370000', 'reward':'740000'}, {'ID':'38', 'color':'rgb(13,9,196)', 'cost':'380000', 'reward':'760000'}, {'ID':'39', 'color':'rgb(5,125,45)', 'cost':'390000', 'reward':'780000'}, {'ID':'40', 'color':'rgb(20,236,230)', 'cost':'400000', 'reward':'800000'}, {'ID':'41', 'color':'rgb(47,141,8)', 'cost':'410000', 'reward':'820000'}, {'ID':'42', 'color':'rgb(78,193,197)', 'cost':'420000', 'reward':'840000'}, {'ID':'43', 'color':'rgb(112,171,232)', 'cost':'430000', 'reward':'860000'}, {'ID':'44', 'color':'rgb(183,216,163)', 'cost':'440000', 'reward':'880000'}, {'ID':'45', 'color':'rgb(66,1,240)', 'cost':'450000', 'reward':'900000'}, {'ID':'46', 'color':'rgb(73,65,186)', 'cost':'460000', 'reward':'920000'}, {'ID':'47', 'color':'rgb(148,107,51)', 'cost':'470000', 'reward':'940000'}, {'ID':'48', 'color':'rgb(153,69,118)', 'cost':'480000', 'reward':'960000'}, {'ID':'49', 'color':'rgb(252,196,11)', 'cost':'490000', 'reward':'980000'}, {'ID':'50', 'color':'rgb(251,90,186)', 'cost':'500000', 'reward':'1000000'}, {'ID':'51', 'color':'rgb(15,107,60)', 'cost':'510000', 'reward':'1020000'}, {'ID':'52', 'color':'rgb(103,33,39)', 'cost':'520000', 'reward':'1040000'}, {'ID':'53', 'color':'rgb(151,147,180)', 'cost':'530000', 'reward':'1060000'}, {'ID':'54', 'color':'rgb(92,252,121)', 'cost':'540000', 'reward':'1080000'}, {'ID':'55', 'color':'rgb(209,149,171)', 'cost':'550000', 'reward':'1100000'}, {'ID':'56', 'color':'rgb(93,85,254)', 'cost':'560000', 'reward':'1120000'}, {'ID':'57', 'color':'rgb(174,255,174)', 'cost':'570000', 'reward':'1140000'}, {'ID':'58', 'color':'rgb(204,129,72)', 'cost':'580000', 'reward':'1160000'}, {'ID':'59', 'color':'rgb(63,195,230)', 'cost':'590000', 'reward':'1180000'}, {'ID':'60', 'color':'rgb(87,199,199)', 'cost':'600000', 'reward':'1200000'}, {'ID':'61', 'color':'rgb(253,55,65)', 'cost':'610000', 'reward':'1220000'}, {'ID':'62', 'color':'rgb(180,126,254)', 'cost':'620000', 'reward':'1240000'}, {'ID':'63', 'color':'rgb(69,141,244)', 'cost':'630000', 'reward':'1260000'}, {'ID':'64', 'color':'rgb(50,133,194)', 'cost':'640000', 'reward':'1280000'}, {'ID':'65', 'color':'rgb(50,238,73)', 'cost':'650000', 'reward':'1300000'}, {'ID':'66', 'color':'rgb(23,249,39)', 'cost':'660000', 'reward':'1320000'}, {'ID':'67', 'color':'rgb(35,17,154)', 'cost':'670000', 'reward':'1340000'}, {'ID':'68', 'color':'rgb(29,47,15)', 'cost':'680000', 'reward':'1360000'}, {'ID':'69', 'color':'rgb(206,243,218)', 'cost':'690000', 'reward':'1380000'}, {'ID':'70', 'color':'rgb(215,190,137)', 'cost':'700000', 'reward':'1400000'}, {'ID':'71', 'color':'rgb(3,181,29)', 'cost':'710000', 'reward':'1420000'}, {'ID':'72', 'color':'rgb(243,172,215)', 'cost':'720000', 'reward':'1440000'}, {'ID':'73', 'color':'rgb(16,33,109)', 'cost':'730000', 'reward':'1460000'}, {'ID':'74', 'color':'rgb(88,135,127)', 'cost':'740000', 'reward':'1480000'}, {'ID':'75', 'color':'rgb(227,102,230)', 'cost':'750000', 'reward':'1500000'}, {'ID':'76', 'color':'rgb(133,14,209)', 'cost':'760000', 'reward':'1520000'}, {'ID':'77', 'color':'rgb(51,87,214)', 'cost':'770000', 'reward':'1540000'}, {'ID':'78', 'color':'rgb(120,78,121)', 'cost':'780000', 'reward':'1560000'}, {'ID':'79', 'color':'rgb(168,171,84)', 'cost':'790000', 'reward':'1580000'}, {'ID':'80', 'color':'rgb(144,29,164)', 'cost':'800000', 'reward':'1600000'}, {'ID':'81', 'color':'rgb(101,38,83)', 'cost':'810000', 'reward':'1620000'}, {'ID':'82', 'color':'rgb(31,44,50)', 'cost':'820000', 'reward':'1640000'}, {'ID':'83', 'color':'rgb(188,76,139)', 'cost':'830000', 'reward':'1660000'}, {'ID':'84', 'color':'rgb(202,212,201)', 'cost':'840000', 'reward':'1680000'}, {'ID':'85', 'color':'rgb(82,129,75)', 'cost':'850000', 'reward':'1700000'}, {'ID':'86', 'color':'rgb(183,44,216)', 'cost':'860000', 'reward':'1720000'}, {'ID':'87', 'color':'rgb(248,250,79)', 'cost':'870000', 'reward':'1740000'}, {'ID':'88', 'color':'rgb(23,43,104)', 'cost':'880000', 'reward':'1760000'}, {'ID':'89', 'color':'rgb(154,125,67)', 'cost':'890000', 'reward':'1780000'}, {'ID':'90', 'color':'rgb(85,176,20)', 'cost':'900000', 'reward':'1800000'}, {'ID':'91', 'color':'rgb(30,147,201)', 'cost':'910000', 'reward':'1820000'}, {'ID':'92', 'color':'rgb(248,227,63)', 'cost':'920000', 'reward':'1840000'}, {'ID':'93', 'color':'rgb(224,117,229)', 'cost':'930000', 'reward':'1860000'}, {'ID':'94', 'color':'rgb(219,245,235)', 'cost':'940000', 'reward':'1880000'}, {'ID':'95', 'color':'rgb(31,71,255)', 'cost':'950000', 'reward':'1900000'}, {'ID':'96', 'color':'rgb(84,131,159)', 'cost':'960000', 'reward':'1920000'}, {'ID':'97', 'color':'rgb(51,151,18)', 'cost':'970000', 'reward':'1940000'}, {'ID':'98', 'color':'rgb(227,207,18)', 'cost':'980000', 'reward':'1960000'}, {'ID':'99', 'color':'rgb(238,74,70)', 'cost':'990000', 'reward':'1980000'}, {'ID':'100', 'color':'rgb(157,238,1)', 'cost':'1000000', 'reward':'2000000'}
+];
+
+
+var thewarrior = getCookie("currentBattle");
+var thereward = warriors[thewarrior-1]["reward"];
+var thecost = warriors[thewarrior-1]["cost"];
+setCookie("currentReward", thereward, 1);
+
+$('#gameprize').html(getCookie("currentReward"));
+$('#previewReward').html(getCookie("currentReward"));
+$('#thecost').html(thecost);
+$('#opponentname').html('warrior '+getCookie("currentBattle"));
+$('#backname').html('warrior '+getCookie("currentBattle"));
+
+$('#myName').html(getCookie("playerName"));
+$('#myDp').html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+
+ $('#previewDp').html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+ $('#previeOppname').html('warrior '+getCookie("currentBattle"));
+
+
+var sumWarrior100=parseFloat(getCookie("currentBattle"))+100;
+$('#opponentdp').html('<img src="img/avatarsandicons/'+sumWarrior100+'avatar.png">');
+
+$('#previewOppdp').html('<img src="img/avatarsandicons/'+sumWarrior100+'avatar.png">');
+
+$('#previewName').html(getCookie("playerName"));
+
+ $('#previewDp').html('<img src="img/avatarsandicons/'+getCookie("playerAvatar")+'avatar.png">');
+
+$('#gamestage').css("background",warriors[thewarrior-1]["color"]);
+$('#gamestage').css("background-image","radial-gradient(rgb(0 0 0 / 20%), rgb(0 0 0 / 60%))");
+
+
+function setCookie(cname, cvalue, exdays) {
+  const d = new Date();
+  d.setTime(d.getTime() + (exdays*24*60*60*1000));
+  let expires = "expires="+ d.toUTCString();
+  document.cookie = cname + "=" + cvalue + ";" + expires + "";
+}
+
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(';');
+  for(let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == ' ') {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
+  }
+  return "";
+}
+
+
+var card_value = ['1C','2C','3C','4C','5C','6C','7C','8C','1H','2H','3H','4H','5H','6H','7H','8H'];
+
+var whotcards = [["1CI", 1, "CI"], ["2CI", 2, "CI"], ["3CI", 3, "CI"], ["4CI", 4, "CI"], ["5CI", 5, "CI"], ["7CI", 7, "CI"], ["8CI", 8, "CI"], ["10CI", 10, "CI"], ["11CI", 11, "CI"], ["12CI", 12, "CI"], ["13CI", 13, "CI"], ["14CI", 14, "CI"], ["1TR", 1, "TR"], ["2TR", 2, "TR"], ["3TR", 3, "TR"], ["4TR", 4, "TR"], ["5TR", 5, "TR"], ["7TR", 7, "TR"], ["8TR", 8, "TR"], ["10TR", 10, "TR"], ["11TR", 11, "TR"], ["12TR", 12, "TR"], ["13TR", 13, "TR"], ["14TR", 14, "TR"], ["1CR", 1, "CR"], ["2CR", 2, "CR"], ["3CR", 3, "CR"], ["5CR", 5, "CR"], ["7CR", 7, "CR"], ["10CR", 10, "CR"], ["11CR", 11, "CR"], ["13CR", 13, "CR"], ["14CR", 14, "CR"], ["1SQ", 1, "SQ"], ["2SQ", 2, "SQ"], ["3SQ", 3, "SQ"], ["5SQ", 5, "SQ"], ["7SQ", 7, "SQ"], ["10SQ", 10, "SQ"], ["11SQ", 11, "SQ"], ["13SQ", 13, "SQ"], ["14SQ", 14, "SQ"], ["1ST", 1, "ST"], ["2ST", 2, "ST"], ["3ST", 3, "ST"], ["4ST", 4, "ST"], ["5ST", 5, "ST"], ["7ST", 7, "ST"], ["8ST", 8, "ST"]
+];
+
+var playercards = [];
+var opponentcards = [];
+var facecards = [];
+
+var opponentcontinue = false;
+var playercontinue = false;
+
+let cardsIcon = {'TR':'<i class="fas fa-mountain" style=""></i>', 'CI':'<i class="fas fa-circle"></i>', 'CR':'<i class="fas fa-plus"></i>', 'SQ':'<i class="fas fa-square"></i>', 'ST':'<i class="fas fa-star"></i>'};
+
+var Turn = "";
+
+var started = false;
+var ended = false;
+
+
+// set default positions
+var card_left = [];
+var card_top = [];
+
+
+var countplayercards = $('.playercard').length;
+var countopponentcards = $('.opponentcard').length;
+
+for(var i=0; i < countplayercards; i++) {
+  card_left[i] = 90 + 70 * (i%20);
+  //card_top[i] = 15 + 120 * Math.floor(i/4);
+}
+
+
+var cards_turned = 0;
+var matches_found = 0;
+var card1 = false;
+var card2 = false;
+
+
+function startgame(){
+    
+}
+
+
+function generalMarket(aCommand, marketcounter){
+
+    if(ended==true){
+        return false;
+    }
+
+    if(whotcards.length==0){return false;}
+
+    if(whotcards.length<10){
+        $('#marketCount').css('background', '#cc0000b8');
+    }
+
+    if(aCommand!="pick2" && aCommand!="pick3"){
+        if(Turn=="Opponent"){return false;}
+    }
+
+    
+    //alert(whotcards.length);
+
+    playsound("playCard");
+
+    if(playercontinue==true){
+        playsound("continue");
+        playercontinue=false;
+    }
+    
+    var randomCardspick = Math.floor(Math.random()*whotcards.length);
+    var randomCard = whotcards[randomCardspick];
+    playercards.push(randomCard);
+    var newcard = `<a id="card_5"  onclick="playcard(`+i+`,\'`+randomCard[0]+`\')" class="playermarket playercard newcard" style="z-index: 0; transform:rotate(390deg);opacity: 0; top: 80%; margin-left: -20px;">
+    
+    <div id="playcardbox">
+				<div id="playcardvalue">
+                    `+randomCard[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+randomCard[1]+`
+				</div>
+			</div>
+    </a>`;
+    $('#playercards').append(newcard);
+    //setTimeout(function (){alert(whotcards)},6000);
+    
+    setTimeout(showmarket,0700);
+    RemoveMarketCard('playeraction',randomCardspick);
+
+
+    
+    function showmarket(){
+        var countplayermarkets = $('.playermarket').length;
+        for(i=0; i < countplayermarkets; i++){
+            var el = document.getElementsByClassName("playermarket")[i];
+            el.style["WebkitTransform"] = "rotate(360deg)";
+            el.style["zIndex"] = 0;
+            el.style["opacity"] = "1";
+            el.style["position"] = "relative";
+            el.style["bottom"] = "";
+            $(el).removeClass('playermarket');
+            setTimeout(RefreshPlayerCards,500);
+
+            if(aCommand=="Direct"){
+                if(whotcards.length==0){
+                    playsound("nomoremarket");
+                    setTimeout(ResultCountCards,1000);
+                    return false;
+                }else{
+                    setTimeout(oppoPlayCard,0500);
+                }
+            }
+
+            
+        var myDiv = document.getElementById("playercards");
+        myDiv.scrollLeft = myDiv.scrollWidth;
+
+            //alert("After Player Market-"+whotcards.length);
+        
+        }
+
+        if(whotcards.length==0){
+            playsound("nomoremarket");
+            setTimeout(ResultCountCards,1000);
+            ended = true;
+        }
+
+        if(aCommand=="pick2"){
+            if(marketcounter==1){
+                generalMarket("pick2", 2);
+            }else if(marketcounter==2){
+                setTimeout(function(){oppoPlayCard()},0700);
+            }
+        }else if(aCommand=="pick3"){
+            if(marketcounter==1){
+                generalMarket("pick3", 2);
+            }else if(marketcounter==2){
+                generalMarket("pick3", 3);
+            }else if(marketcounter==3){
+                setTimeout(function(){oppoPlayCard()},0700);
+            }
+        }else{
+            Turn="Opponent";
+            $('#opponentinfo').css('background', 'rgb(8 131 3 / 58%)');
+    
+            $('#playerinfo').css('background', ' rgba(0, 0, 0, 0.58)');
+        }
+    }
+
+    if(aCommand!="pick2"){
+        Turn="Opponent";
+        $('#opponentinfo').css('background', 'rgb(8 131 3 / 58%)');
+    
+        $('#playerinfo').css('background', ' rgba(0, 0, 0, 0.58)');
+        
+    }
+    
+}
+
+
+function oppogeneralMarket(markettype, marketcounter){
+
+
+
+    if(ended==true){
+        return false;
+    }
+
+    if(markettype!="picktwo" && markettype!="market" && markettype!="pickthree"){
+        Turn="Player";
+    }else{
+        Turn = "Opponent";
+    }
+
+    $('#opponentinfo').css('background', ' rgba(0, 0, 0, 0.58)');
+    
+    $('#playerinfo').css('background', 'rgb(8 131 3 / 58%)');
+
+    if(whotcards.length==0){return false;}
+
+    if(whotcards.length<10){
+        $('#marketCount').css('background', '#cc0000b8');
+    }
+
+    playsound("playCard");
+
+    if(opponentcontinue==true){
+        playsound("continue");
+        opponentcontinue=false;
+    }
+    
+    
+
+    //alert(whotcards.length);
+    var randomCardspick = Math.floor(Math.random()*whotcards.length);
+    var randomCard = whotcards[randomCardspick];
+    
+    opponentcards.push(randomCard);
+    var countoppo=opponentcards.length-1;
+    var newcard = '<a id="oppocard_'+countoppo+'" onclick="" class="opponentmarket opponentcard oldcard" style="z-index: 0; top: 45%; left: 10%; transform: rotate(390deg); opacity: 1; position: fixed; margin-left: -20px;"><img src="img/whotback.png"></a>';
+    $('#opponentcards').append(newcard);
+    setTimeout(showOppoMarket,0050);
+
+    function showOppoMarket(){
+        var countoppomarkets = $('.opponentmarket').length;
+        for(i=0; i < countoppomarkets; i++){ 
+            var el = document.getElementsByClassName("opponentmarket")[i];
+            el.style["WebkitTransform"] = "rotate(370deg)";
+            $(el).css('top', '2%');
+            $(el).css('left', '80%');
+            setTimeout(addoppomarket,0700);
+            RemoveMarketCard('opponentaction',randomCardspick);
+
+            
+
+        }
+    }
+
+
+
+
+    function addoppomarket(){
+
+        for(i=0; i<document.getElementsByClassName("opponentmarket").length; i++){
+            
+            var el = document.getElementsByClassName("opponentmarket")[i];
+            $(el).css('left', '0%');
+            $(el).css('position', 'relative');
+            $(el).removeClass('opponentmarket');
+            el.style["WebkitTransform"] = "rotate(360deg)";
+        }
+
+        //alert("After Opponnent Market-"+whotcards.length);
+        if(whotcards.length==0){
+                ended = true;
+                playsound("nomoremarket");
+                setTimeout(ResultCountCards,1000);
+        }
+
+        $('#oppocardscountBox').html(''+opponentcards.length+' &#127136;');
+
+        if(markettype=="picktwo"){
+            if(marketcounter==1){
+                oppogeneralMarket("picktwo",2);
+                Turn = "Opponent";
+            }else if(marketcounter==2){
+                Turn="Player";
+            }
+        }else if(markettype=="pickthree"){
+            if(marketcounter==1){
+                oppogeneralMarket("pickthree",2);
+                Turn = "Opponent";
+            }else if(marketcounter==2){
+                oppogeneralMarket("pickthree",3);
+                Turn = "Opponent";
+            }else if(marketcounter==3){
+                Turn = "Player";
+            }
+        }else if(markettype=="market"){
+            Turn="Player";
+        }
+
+    }
+
+
+
+}
+
+
+
+
+function popFancy(theCommand){
+
+    if(opponentcards.length!=0 && playercards.length!=0){
+        $("."+theCommand).css("font-size","80px");
+        setTimeout(function(){$(".fancypopBox").css("font-size","0px");},1000);
+    }
+}
+
+
+
+function playcard(id,cardValue){
+
+    if(ended==true){
+        return false;
+    }
+
+    if(Turn=="Opponent"){return false;}
+
+    var currentfacecard = facecards[facecards.length-1];
+    var getplayercard = playercards[id];
+    var playedcard = [getplayercard[0],getplayercard[1],getplayercard[2]];
+    if(currentfacecard[1]!=getplayercard[1] && currentfacecard[2]!=getplayercard[2]){
+        playsound("wrongcard");
+        $("."+getplayercard[0]+"").css("background","#fe8c8c");
+
+        setTimeout(function (){$("."+getplayercard[0]+"").css("background","#fff")}, 0500);
+        //alert("Bad Card");
+        return false;
+    }
+
+    playsound("playCard");
+
+    facecards.push(playedcard);
+    var x = playercards.splice(id,1);
+    var countfacecards = $('.addedfacecard').length;
+    
+    //check if player's last card
+    if(playercards.length==0){
+        var el = document.getElementById("card_" + id);
+        el.classList.remove("newcard");
+        el.classList.add("addedfacecard");
+        $(el).css('top', '');
+        el.style["WebkitTransform"] = "rotate(360deg)";
+        el.style["zIndex"] = countfacecards+1;
+
+        setTimeout(cardToFace(id), 0100);
+
+        playsound("checkup");
+        ended = true;
+        
+        setTimeout(function (){winnerdecide("player")},2000);
+        
+        
+        return false;
+    }else{
+        Turn=="Opponent";
+
+        var el = document.getElementById("card_" + id);
+        el.classList.remove("newcard");
+        el.classList.add("addedfacecard");
+        $(el).css('top', '');
+        el.style["WebkitTransform"] = "rotate(360deg)";
+        el.style["zIndex"] = countfacecards+1;
+
+        setTimeout(cardToFace(id), 0100);
+    }
+
+    
+  
+  
+
+  function cardToFace(id){
+    var el = document.getElementById("card_"+id);
+    var rightrotate = Math.floor(Math.random() * 30)
+    el.style["WebkitTransform"] = "rotate("+Math.floor(Math.random() * rightrotate)+"deg)";
+
+    el.style["bottom"] = "40%";
+    el.style["left"] = "45%";
+    el.style["margin-left"] = Math.floor(Math.random() * 20)+"px";
+    el.style["margin-top"] = Math.floor(Math.random() * 20)+"px";
+    $(el).css('bottom', '');
+    $(el).css('top', '40%');
+    el.removeAttribute('id');
+
+    Turn="Opponent";
+
+    if(playedcard[1]==2){
+
+        pickTwo("player");
+        
+    }else if(playedcard[1]==5){
+
+        pickThree("player");
+
+    }else if(playedcard[1]==14){
+
+        doMarket("player");
+
+    }else if(playedcard[1]==1){
+        playsound("holdon");
+        popFancy("holdFancyPop");
+        var holdON=true;
+        Turn="Player";
+        setTimeout(RefreshPlayerCards("ignoreOppo"),0500);
+        playercontinue = true;
+    }else{
+        if(playercontinue==true){
+            playsound("continue");
+            playercontinue = false;
+        }
+        Turn="Opponent";
+        $('#opponentinfo').css('background', 'rgb(8 131 3 / 58%)');
+    
+        $('#playerinfo').css('background', ' rgba(0, 0, 0, 0.58)');
+        RefreshPlayerCards();
+        setTimeout(oppoPlayCard,1000);
+    }
+  }
+
+  
+
+  
+
+}
+
+
+function pickTwo(){
+
+    playsound("picktwo");
+    popFancy("pickTwoFancyPop");
+    playercontinue = true;
+
+    RefreshPlayerCards("ignoreOppo");
+
+    setTimeout(function(){oppogeneralMarket("picktwo",1)},0900);
+
+
+}
+
+function pickThree(){
+
+    playsound("PickThree");
+    popFancy("pickThreeFancyPop");
+    playercontinue = true;
+
+    RefreshPlayerCards("ignoreOppo");
+
+    setTimeout(function(){oppogeneralMarket("pickthree",1)},0900);
+
+}
+
+function doMarket(){
+
+    playsound("generalmarket");
+    popFancy("marketFancyPop");
+    playercontinue = true;
+
+    RefreshPlayerCards("ignoreOppo");
+
+    oppogeneralMarket("market",1);
+
+
+}
+
+
+function RefreshPlayerCards(aCommand){
+    var countnewcards = $('.newcard').length;
+    for(i=0; i < countnewcards; i++){
+        var el = document.getElementsByClassName('newcard')[0];
+        el.remove();
+    }
+
+    
+
+    for(i=0; i<playercards.length; i++){
+        var getplayercard = playercards[i];
+        var newPlayerCard = [getplayercard[0],getplayercard[1],getplayercard[2]];
+
+        if(getplayercard[1]=='2'){
+            var cardDesign = "twoCard";
+        }else if(getplayercard[1]=='14'){
+            var cardDesign = "genmarketCard";
+        }else if(getplayercard[1]=='1'){
+            var cardDesign = "holdonCard";
+        }else{
+            var cardDesign = "";
+        }
+
+        if(i==0){var marginleft="0"}else{var marginleft="-15"};
+        var newcard = `<a id="card_`+i+`" class="`+cardDesign+` playercard newcard `+getplayercard[0]+`" onclick="playcard(`+i+`,\'`+getplayercard[0]+`\')" style="z-index: 0; transform: rotate(360deg); opacity: 1; top: 80%; margin-left: `+marginleft+`px;">
+        <div id="playcardbox">
+				<div id="playcardvalue">
+                    `+getplayercard[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[getplayercard[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[getplayercard[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[getplayercard[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+getplayercard[1]+`
+				</div>
+			</div>
+        </a>`;
+        $('#playercards').append(newcard);
+
+    }
+
+    $('#playercardscountBox').html(''+playercards.length+' &#127136;');
+
+    
+
+}
+
+//Opponent Play Card
+function oppoPlayCard(cardvalue){
+
+    if(ended==true){
+        return false;
+    }
+
+    if(playercards.length==0){
+        return false;
+    }
+
+    if(Turn=="Player"){return false;}
+
+    if(whotcards.length==0){return false;}
+
+    
+
+    Turn="Player";
+    $('#opponentinfo').css('background', 'rgba(0, 0, 0, 0.58)');
+    
+        $('#playerinfo').css('background', ' rgb(8 131 3 / 58%)');
+
+        playsound("playCard");
+
+    for(i=0; i<opponentcards.length; i++){
+        var cardinfo=opponentcards[i];
+
+        if(cardinfo[1] == facecards[facecards.length-1][1] || cardinfo[2] == facecards[facecards.length-1][2]){
+
+            
+
+                if(opponentcards.length==3){
+                    if(cardinfo[1]!=2 && cardinfo[1]!=1 && cardinfo[1]!=14){
+                        playsound("warning");
+                    }else{
+                        //setTimeout(function(){playsound("warning")},2500);
+                    }
+                }
+
+                if(opponentcards.length==2){
+                    if(cardinfo[1]!=2 && cardinfo[1]!=1 && cardinfo[1]!=14){
+                        playsound("lastcard");
+                    }else{
+                        //setTimeout(function(){playsound("lastcard")},2500);
+                    }
+                }
+            
+            facecards.push(cardinfo);
+            var x = opponentcards.splice(i,1);
+
+            var newoppoCard = `<a  onclick="" class="oppoFaceCard oldoppoFace" style="bottom:0; margin-left: -20px;"><div id="playcardbox">
+				<div id="playcardvalue">
+                    `+cardinfo[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+cardinfo[1]+`
+				</div>
+			</div>
+            </a>`;
+            $('#opponentcards').append(newoppoCard);
+            
+            var countoppocards = $('.opponentcard').length;
+            var elx = document.getElementsByClassName("opponentcard")[countoppocards-1];
+            elx.remove();
+            
+            setTimeout(moveoppoPlayCard, 0100);
+
+            if(cardinfo[1]==2){
+                playsound("picktwo");
+                popFancy("pickTwoFancyPop");
+                opponentcontinue = true;
+                setTimeout(function (){generalMarket("pick2", 1)},0900);
+                Turn="Opponent";
+            }else if(cardinfo[1]==5){
+                playsound("PickThree");
+                popFancy("pickThreeFancyPop");
+                opponentcontinue = true;
+                setTimeout(function (){generalMarket("pick3", 1)},0900);
+                Turn="Opponent";
+            }else if(cardinfo[1]==14){
+                playsound("generalmarket");
+                popFancy("marketFancyPop");
+                opponentcontinue = true;
+                Turn="Player";
+                setTimeout(generalMarket,1000);
+                setTimeout(oppoPlayCard,1500);
+            }else if(cardinfo[1]==1){
+                playsound("holdon");
+                popFancy("holdFancyPop");
+                opponentcontinue = true;
+                var holdON=true;
+                Turn="Opponent";
+                setTimeout(oppoPlayCard,1000);
+            }else{
+                if(opponentcontinue==true){
+                    if(opponentcards.length!=1 && opponentcards.length!=2){
+                        playsound("continue");
+                        opponentcontinue = false;
+                    }else{
+                        opponentcontinue = false;
+                    }
+                }
+
+                
+                setTimeout(oppoPlayCard,1000);
+            }
+                
+            var thecommand="Stop";
+            break;
+        }else{
+            
+            
+            var thecommand="Market";
+        }
+
+    }
+
+    if(thecommand=="Market"){
+        setTimeout(oppogeneralMarket,0500);
+        thecommand="Stop";
+    }
+    
+}
+
+function moveoppoPlayCard(){
+    //var countplayermarkets = $('.oppoFaceCard').length;
+    for(i=0; i < 1; i++){
+        var el = document.getElementsByClassName("oppoFaceCard")[i];
+        var leftrotate = Math.floor(Math.random() * -30);
+        el.style["WebkitTransform"] = "rotate("+Math.floor(Math.random() * leftrotate)+"deg)";
+        
+        el.classList.add("addedfacecard");
+        var countfacecards = $('.addedfacecard').length;
+        el.style["top"] = "40%";
+        el.style["left"] = "45%";
+        el.style["zIndex"] = countfacecards;
+        
+        setTimeout(function (){el.classList.remove("oppoFaceCard");},0100); 
+
+        if(opponentcards.length==0){
+                $('#oppocardscountBox').html(''+opponentcards.length+' &#127136;');
+                playsound("checkup");
+                ended = true;
+                setTimeout(function (){winnerdecide("opponent")},2000);
+                return false;
+            }
+    }
+
+    $('#oppocardscountBox').html(''+opponentcards.length+' &#127136;');
+
+}
+
+
+function RemoveMarketCard(typee, thecard){
+    if(typee!="Dealing"){
+        var x = whotcards.splice(thecard,1);
+    }
+    
+    //alert(x);
+    var countmarketcards = $('.marketcard').length;
+
+    var elx = $('.marketcard')[countmarketcards-1];
+    if(typee=="playeraction"){
+        elx.style["position"]="fixed";
+        elx.style["top"]="90%";
+        elx.style["left"]="80%";
+        setTimeout(function (){elx.remove()},0500);
+    }else{
+        elx.remove();
+    }
+
+    
+
+    var marketcounter=$("#allmarkets").text();
+    var calcmarkets=marketcounter-1;
+    //$("#marketCount").html("<span id='allmarkets'>"+calcmarkets+"</span> - "+whotcards.length);
+    $("#marketCount").html("<span id='allmarkets'>"+calcmarkets+"</span>");
+    
+    
+    
+}
+
+DealMarkets();
+//dealoppocards();
+dealCards();
+
+
+
+
+
+function DealMarkets(){
+    
+
+    for(i=0; i < whotcards.length; i++){
+        
+        var newMarketcard = '<div class="marketcard market_'+i+'" style="margin-left:'+Math.floor(Math.random() * i-1)+'px;margin-top:'+i*-1+'px" onclick="generalMarket(\'Direct\')"><img src="img/whotback.png" ></div>';
+        $('#gamestage').append(newMarketcard);
+        //var el = document.getElementsByClassName("marketcard")[i];
+    }
+}
+
+//Distribute Cards to Players
+function dealCards(){
+
+    
+    playsound("dealingCards");
+
+
+    var numOfCardstoDeal = Math.floor(Math.random() * (7 - 2 + 1) + 2)
+    
+    for(i=0; i<numOfCardstoDeal; i++){
+        var randomCardspick = Math.floor(Math.random()*whotcards.length);
+        var randomCard = whotcards[randomCardspick];
+        var x = whotcards.splice(randomCardspick,1);
+        var newPlayerCard = [randomCard[0],randomCard[1],randomCard[2]];
+        playercards.push(newPlayerCard);
+
+        if(randomCard[1]=='2'){
+            var cardDesign = "twoCard";
+        }else if(randomCard[1]=='14'){
+            var cardDesign = "genmarketCard";
+        }else if(randomCard[1]=='1'){
+            var cardDesign = "holdonCard";
+        }else{
+            var cardDesign = "";
+        }
+
+        var newcard = `<a id="card_`+i+`" class="`+cardDesign+` playercard oldcard oldplayercard `+randomCard[0]+`" onclick="playcard(`+i+',\''+randomCard[0]+`\')">
+            <div id="playcardbox">
+				<div id="playcardvalue">
+                    `+randomCard[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+randomCard[1]+`
+				</div>
+			</div></a>`;
+        $('#playercards').append(newcard);
+        countplayercards = countplayercards + 1;
+        if(i==numOfCardstoDeal-1){
+            setTimeout(dealPlayerCards,0200);
+        }
+        //setTimeout(function (){alert(whotcards)},6000);
+
+      
+    }
+     
+
+    for(s=0; s<numOfCardstoDeal; s++){
+        var randomCardspick = Math.floor(Math.random()*whotcards.length);
+        var randomCard = whotcards[randomCardspick];
+        var x = whotcards.splice(randomCardspick,1);
+        var newOpponentCard = [randomCard[0],randomCard[1],randomCard[2]];
+        opponentcards.push(newOpponentCard);
+        var leftcalc =35*s+55;
+        var newcard = '<a id="oppocard_'+s+'" onclick="" class="opponentcard oldcard oldopponentcard" style="left:'+leftcalc+'px"><img src="img/whotback.png"></a>';
+        $('#opponentcards').append(newcard);
+        countopponentcards = countopponentcards + 1;
+
+    }
+
+    
+}
+
+//Deal Player Cards
+function dealPlayerCards(id)
+{
+    var generatedcards = document.getElementsByClassName('oldplayercard').length;
+    if(generatedcards>0){
+        var el = document.getElementsByClassName('oldplayercard')[0];
+        el.style["zIndex"] = 0;
+        el.style["WebkitTransform"] = "rotate(360deg)";
+        el.style["opacity"] = "1";
+        el.style["top"] = "80%";
+        el.style["left"] = "5%";
+    
+        el.style["margin-left"] = 30*generatedcards+"px";
+        el.classList.remove("oldplayercard");
+        RemoveMarketCard("Dealing","null");
+
+        setTimeout(dealoppocards,0500);
+
+        var generatedcards = document.getElementsByClassName('oldplayercard').length;
+        if(generatedcards==0){
+            setTimeout(playerTakeCards,500);
+        }
+
+        
+    }
+    
+}
+function playerTakeCards(){
+
+    
+
+    
+    stopsound("dealingCards");
+
+    for(i=0; i < countplayercards; i++){
+            var elx = document.getElementsByClassName("playercard")[i];
+            elx.classList.remove("oldcard");
+            elx.classList.add("newcard");
+            elx.style["left"] = "0px";
+            
+            if(i=='0'){
+                elx.style["margin-left"] = "0px";
+            }else{
+                elx.style["margin-left"] = "-20px";
+            }
+
+            if(i==countplayercards-1){
+               setTimeout(removecardleft,0100);
+               setTimeout(pickFacecard,0200);
+            }
+
+            $('#playercardscountBox').html(''+playercards.length+' &#127136;');
+
+    }
+
+    $("#marketCount").css("left","10%");
+        
+}
+function removecardleft(){
+    for(p=0; p < playercards.length; p++){
+                    var el = document.getElementsByClassName("playercard")[p];
+                    el.style["left"] = "";
+                }
+                
+}
+
+//Deal Opponent Cards
+function dealoppocards(id)
+{
+    var generatedcards = document.getElementsByClassName('oldopponentcard').length;
+    if(generatedcards>0){
+        var el = document.getElementsByClassName('oldopponentcard')[0];
+        el.style["zIndex"] = 1000;
+        el.style["top"] = "60px";
+        el.style["left"] = card_left[id] + "px";
+        el.style["WebkitTransform"] = "rotate(360deg)";
+        el.style["zIndex"] = 0;
+        el.style["opacity"] = "1";
+
+        el.classList.remove("oldopponentcard");
+        RemoveMarketCard("Dealing","null");
+        
+        setTimeout(dealPlayerCards,0500);
+
+        var generatedcards = document.getElementsByClassName('oldopponentcard').length;
+        if(generatedcards==0){
+            setTimeout(oppoTakeCards,500);
+        }
+
+        
+    }
+}
+function oppoTakeCards(){
+
+    for(i=0; i < countopponentcards; i++){
+        var el = document.getElementById("oppocard_" + i);
+        
+        el.style["position"] = "relative";
+        
+        el.style["left"] = "0px";
+        el.style["top"] = "0px";
+        
+        if(i=='0'){
+            el.style["margin-right"] = "-20px";
+        }else{
+            el.style["margin-right"] = "-20px";
+        }
+    }
+
+    $('#oppocardscountBox').html(''+opponentcards.length+' &#127136;');
+}
+
+
+
+
+
+
+//Add FaceCard
+function pickFacecard(){
+    var randomCardspick = Math.floor(Math.random()*whotcards.length);
+    var randomCard = whotcards[randomCardspick];
+    var x = whotcards.splice(randomCardspick,1);
+    var newFaceCard = [randomCard[0],randomCard[1],randomCard[2]];
+    facecards.push(newFaceCard);
+
+    if(randomCard[1]=='2'){
+            var cardDesign = "twoCard";
+        }else if(randomCard[1]=='14'){
+            var cardDesign = "genmarketCard";
+        }else if(randomCard[1]=='1'){
+            var cardDesign = "holdonCard";
+        }else{
+            var cardDesign = "";
+        }
+    var newcard = `<a  id="facecard" class="`+cardDesign+` addedfacecard" onclick="">
+            <div id="playcardbox">
+				<div id="playcardvalue">
+                    `+randomCard[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[randomCard[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+randomCard[1]+`
+				</div>
+			</div></a>`;
+    $('#gamestage').append(newcard);
+    
+    RemoveMarketCard("Dealing","null");
+    setTimeout(showFaceCard,0500);
+
+    playsound("flipcard");
+}
+function showFaceCard(){
+    var el = document.getElementById("facecard");
+    el.style["left"] = "45%";
+    el.style["WebkitTransform"] = "rotate(360deg)";
+    el.style["opacity"] = "1";
+
+    
+   
+}
+
+
+//open a modal
+function openmodal(modalID){
+    $('.modal').css('display','block');
+    $("#"+modalID).css("display","block");
+
+    setTimeout(function(){
+    $(".modalbox").css("left","50%")},0200);
+}
+
+function closemodal(){
+    var modalboxCount = $('.modalbox').length;
+    
+    $('.modal').css('display','none');
+
+    $('.modalbox').css("left",'-300%');
+
+    for(i=0;i<modalboxCount;i++){
+        document.getElementsByClassName("modalbox")[i].style.display="none";
+    }
+
+    
+}
+
+
+//Sum Both Players Card Values to Determine Winner
+function ResultCountCards(){
+
+    
+
+    $('#oppocardscountBox').css('opacity','0.5');
+
+    openmodal("CountingMarket");
+
+    setTimeout(function (){closemodal()},5000);
+
+    //sum player card values
+    var addPlayerCards=0;
+
+    for(i=0; i<playercards.length; i++){
+        var aplayercard=playercards[i][1];
+        addPlayerCards = aplayercard+addPlayerCards;
+    }
+
+
+    //sum Opponent card values
+    var addOpponentCards=0;
+
+    for(i=0; i<opponentcards.length; i++){
+        var aopponentcard=opponentcards[i][1];
+        addOpponentCards = aopponentcard+addOpponentCards;
+    }
+
+    for(i=0; i<opponentcards.length; i++){
+        var cardinfo=opponentcards[i];
+
+        var el = $('#oppocard_'+i);
+        el.html(`<div id="playcardbox">
+				<div id="playcardvalue">
+                    `+cardinfo[1]+`
+				</div>
+				<div id="playcardsmallshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbigshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbtsmallshape">
+                    `+cardsIcon[cardinfo[2]]+`
+				</div>
+				<div id="playcardbtvalue">
+                    `+cardinfo[1]+`
+				</div>
+			</div>`);
+        el.addClass("showOpponentcard");
+
+        
+
+        if(i==opponentcards.length-1){
+
+            setTimeout(function (){
+
+                $('.sumShow').css('display','block');
+
+                $('.opponentcard').css('transform','scale(1, -1)');
+
+                if(addPlayerCards>addOpponentCards){
+                    $('#oppoCardSum').css("background","green");
+                    $('#oppoCardSum').html("Won | Card Sum = "+addOpponentCards);
+
+                    $('#playerCardSum').css("background","#cc0000");
+                    $('#playerCardSum').html("You Lost | Card Sum = "+addPlayerCards);
+                    setTimeout(function (){winnerdecide("opponent")},2000);
+                }else{
+                    $('#oppoCardSum').css("background","#cc0000");
+                    $('#oppoCardSum').html("Lost | Card Sum = "+addOpponentCards);
+
+                    $('#playerCardSum').css("background","green");
+                    $('#playerCardSum').html("You Win | Card Sum = "+addPlayerCards);
+                    setTimeout(function (){winnerdecide("player")},2000);
+
+                }
+                ended = true;
+
+                setTimeout(function (){openmodal("resultInfopop");},3000);
+
+                return false;
+
+            },5000);
+        }
+    }
+
+
+    
+}
+
+//Give winner Reward
+function winnerdecide(winner){
+
+    $('#popGoHome').css('opacity','0');
+    $('#popReplay').css('opacity','0');
+
+        $('.closemodalback').css('display','none');
+
+    openmodal("resultInfopop");
+    setTimeout(function(){$('#resultInfopop').css('left','50%')},0500);
+
+    if(winner=="player"){
+
+        window.top.postMessage('addPrize', '*');
+
+        $('.pyro').css('display','block');
+        playsound('youwin');
+        setTimeout(function(){playsound('fireworks')},1200);
+        $('#playerwinStatus').css('display','block');
+
+        var gameTimer = Math.floor(Math.random() * 100);
+
+        if(gameTimer<30){
+            setCookie("warriorStar"+getCookie("currentBattle")+"",3,365);
+            setTimeout(function(){addStar(0,1)},3000);
+            setTimeout(function(){addStar(1,1)},4000);
+            setTimeout(function(){addStar(2,1)},5000);
+
+        }else if(gameTimer>30 && gameTimer<70){
+            
+            setCookie("warriorStar"+getCookie("currentBattle")+"",2,365);
+            setTimeout(function(){addStar(0,1)},3000);
+            setTimeout(function(){addStar(1,1)},4000);
+            setTimeout(function(){addStar(2,0)},4500);
+        }else{
+
+            setCookie("warriorStar"+getCookie("currentBattle")+"",1,365);
+            setTimeout(function(){addStar(0,1)},2500);
+            setTimeout(function(){addStar(1,0)},3000);
+            setTimeout(function(){addStar(2,0)},3500);
+
+        }
+
+
+        if(getCookie("lastWarriorUnlocked")==getCookie("currentBattle")){
+            document.getElementById('gameGoHome').setAttribute('onclick','goHome("levelunlocked")');
+
+            document.getElementById('popGoHome').setAttribute('onclick','goHome("levelunlocked")');
+
+            
+        }else{
+            document.getElementById('gameGoHome').setAttribute('onclick','goHome()');
+
+            document.getElementById('popGoHome').setAttribute('onclick','goHome()');
+        }
+
+
+        ended=true;
+
+    }else{
+        setCookie("warriorStar"+getCookie("currentBattle")+"",0,365);
+        setTimeout(function(){addStar(0,0)},0500);
+        setTimeout(function(){addStar(1,0)},0700);
+        setTimeout(function(){addStar(2,0,"lost")},1000);
+        document.getElementById('gameGoHome').setAttribute('onclick','goHome()');
+        playsound('youlose');
+        $('#tryAgain').css('display','block');
+        $('#resultReward').css('display','none');
+        $('#oppowinStatus').css('display','block');
+        ended=true;
+    }
+}
+
+function settings(){
+    window.top.postMessage('settings', '*');
+}
+
+
+
+
+function cancelWarning(){
+    playsound("flipcard");
+    openmodal("cancelGame");
+}
+
+function goHome(aCommand){
+
+    
+    playsound("flipcard");
+
+    if(aCommand=="levelunlocked"){
+        window.top.postMessage('goHomeUnlocked', '*');
+
+    }else{
+        window.top.postMessage('goHome', '*');
+    }
+}
+
+function stopsound(soundeffect){
+    if(soundeffect=="dealingCards"){
+        var thesound = document.getElementById("dealingCards");
+            thesound.pause();
+            thesound.currentTime = 0;
+    }
+}
+
+
+//play sounds
+function playsound(soundeffect){
+
+    if(getCookie("effects")=="on"){
+        if(soundeffect=="flipcard"){
+            var flipsound = document.getElementById("flipcard");
+            flipsound.playbackRate = 2;
+            flipsound.play();
+        }
+
+        if(soundeffect=="playCard"){
+            var thesound = document.getElementById("playCard");
+            thesound.volume = 0.5;
+            thesound.play();
+        }
+
+        if(soundeffect=="starDrop"){
+            var thesound = document.getElementById("starDrop");
+            thesound.volume = 1;
+            thesound.playbackRate = 2;
+            thesound.play();
+        }
+
+        if(soundeffect=="fireworks"){
+            var thesound = document.getElementById("fireworks");
+            thesound.play();
+        }
+
+        if(soundeffect=="dealingCards"){
+            var thesound = document.getElementById("dealingCards");
+            thesound.playbackRate = 1;
+            thesound.volume = 0.6;
+            thesound.play();
+        }
+
+        if(soundeffect=="wrongcard"){
+            var thesound = document.getElementById("wrongcard");
+            thesound.play();
+        }
+    }
+    
+    if(getCookie("voice")=="on"){
+
+        if(playercards.length==0 || opponentcards.length==0){
+
+        }else{
+
+            if(soundeffect=="generalmarket"){
+                var thesound = document.getElementById("generalmarket");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }else if(soundeffect=="holdon"){
+                var thesound = document.getElementById("holdon");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }else if(soundeffect=="picktwo"){
+                var thesound = document.getElementById("picktwo");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }else if(soundeffect=="PickThree"){
+                var thesound = document.getElementById("PickThree");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }else if(soundeffect=="continue"){
+                var thesound = document.getElementById("continue");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }
+
+        }
+
+        if(soundeffect=="warning"){
+                var thesound = document.getElementById("warning");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }
+
+        
+            
+            if(soundeffect=="lastcard"){
+                var thesound = document.getElementById("lastcard");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }
+
+        if(soundeffect=="checkup"){
+                var thesound = document.getElementById("checkup");
+                thesound.playbackRate = 1.5;
+                thesound.play();
+            }
+        
+        if(soundeffect=="nomoremarket"){
+            var thesound = document.getElementById("nomoremarket");
+            thesound.playbackRate = 1.5;
+            thesound.play();
+        }else if(soundeffect=="youwin"){
+            var thesound = document.getElementById("youwin");
+            thesound.playbackRate = 1.5;
+            thesound.play();
+        }else if(soundeffect=="youlose"){
+            var thesound = document.getElementById("youlose");
+            thesound.playbackRate = 1.5;
+            thesound.play();
+        }
+    }
+    
+    
+}
+
+
+
+
+
+function tryAgain(){
+    var currentCost = warriors[getCookie("currentBattle")-1]['cost'];
+    var coinBalance = getCookie("coinBalance");
+
+    if(parseFloat(currentCost)>parseFloat(coinBalance)){
+        closemodal();
+        window.top.postMessage('lowCoinsPop', '*');
+        return false;
+    }
+
+    var newCoinBalance = coinBalance - currentCost;
+    setCookie("coinBalance",newCoinBalance,365);
+
+    closemodal();
+
+    $('#tryAgain').css('display','none');
+
+    $('#resultReward').css('display','block');
+
+    $('#coinbalance').html(getCookie("coinBalance"));
+
+    location.href = "all-rules.html";
+}
+
+
+function nextBattle(){
+
+    var nextWarrior = parseFloat(getCookie("lastBattle"))+1;
+    
+    setCookie("currentBattle",nextWarrior,365);
+
+    var currentCost = warriors[getCookie("currentBattle")-1]['cost'];
+    var coinBalance = getCookie("coinBalance");
+
+    if(parseFloat(currentCost)>parseFloat(coinBalance)){
+        closemodal();
+        window.top.postMessage('lowCoinsPop', '*');
+        return false;
+    }
+
+    var newCoinBalance = coinBalance - currentCost;
+    setCookie("coinBalance",newCoinBalance,365);
+
+    closemodal();
+
+    $('#tryAgain').css('display','none');
+
+    $('#resultReward').css('display','block');
+
+    $('#coinbalance').html(getCookie("coinBalance"));
+
+    window.top.postMessage('nextBattle', '*');
+
+    location.href = "all-rules.html";
+}
+
+
+//setCookie("warriorStar1",2,365);
+//setCookie("warriorStar2",3,365);
+
+
+
+function addStar(aCommand,Starstatus,winStatus){
+
+    if(Starstatus==1){
+        document.getElementsByClassName('zoomStar')[aCommand].innerHTML="★";
+        playsound("starDrop");
+    }else{
+        document.getElementsByClassName('zoomStar')[aCommand].style.transition="all 0s";
+        document.getElementsByClassName('zoomStar')[aCommand].style.fontSize="65px";
+
+    }
+
+    if(aCommand=="2"){
+        $('#popGoHome').css('opacity','1');
+        
+        $('#popNextBattle').css('opacity','1');
+        $('#popReplay').css('opacity','1');
+        $('.closemodalback').css('display','block');
+
+        if(winStatus!="lost"){
+            $('#popNextBattle').css('display','inline');
+        }
+    }
+
+    
+
+    document.getElementsByClassName('zoomStar')[aCommand].style.display="block";
+    setTimeout(function(){
+        document.getElementsByClassName('zoomStar')[aCommand].style.fontSize="65px";
+        //document.getElementsByClassName('zoomStar')[aCommand].style.transform = 'rotateX(90deg)';
+    },0200);
+}
+
+</script>
+
+</body>
+
+</html>
+
